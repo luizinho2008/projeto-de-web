@@ -292,3 +292,18 @@ input[type="file"] {
         font-size: 36px;
     }
 }
+
+.deleta, .edita {
+    background-color: rgb(33, 0, 221);
+    border: none;
+}
+
+.buttons button {
+    height: 50px;
+    border-radius: 20px;
+    font-size: 25px;
+    font-weight: bolder;
+    color: white;
+    width: 200px;
+    cursor: pointer;
+}
