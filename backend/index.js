@@ -10,14 +10,26 @@ app.use(express.json());
 app.set('json spaces', 2);
 
 app.get("/", (req, res) => {
-    res.send("<h2> Site para cadastro de torcedores do palmeiras </h2>");
+    res.send("<h2>Site para cadastro de torcedores do palmeiras</h2>");
 });
 
 app.get("/api/torcedores", (req, res) => {
     const sql = `SELECT * FROM torcedores;`;
     db.query(sql, (erro, resultados) => {
         if (erro) {
-            res.send("<h2> Falha ao fazer a consulta </h2>");
+            res.send("<h2>Falha ao fazer a consulta</h2>");
+        }
+        else {
+            res.send(resultados);
+        }
+    });
+});
+
+app.get("/api/torcedores/:id", (req, res) => {
+    const sql = `SELECT * FROM torcedores WHERE id = ${req.params.id};`;
+    db.query(sql, (erro, resultados) => {
+        if (erro) {
+            res.send("<h2>Falha ao fazer a consulta</h2>");
         }
         else {
             res.send(resultados);
@@ -45,6 +57,21 @@ app.delete("/api/torcedores/:id", (req, res) => {
             res.send("<h2>Falha ao inserir torcedor no MySQL</h2>");
         }
         else {
+            res.send(resultados);
+        }
+    });
+});
+
+app.put("/api/torcedores/:id", (req, res) => {
+    const sql = `UPDATE torcedores SET 
+        nome = '${req.body.nome}', email = '${req.body.email}', 
+        telefone = '${req.body.telefone}', 
+        imagem = '${req.body.linkImagem}' WHERE id = ${req.params.id};`;
+
+    db.query(sql, (erro, resultados) => {
+        if (erro) {
+            res.send("<h2>Falha ao atualizar torcedor no MySQL</h2>");
+        } else {
             res.send(resultados);
         }
     });

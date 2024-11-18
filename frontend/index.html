@@ -54,6 +54,7 @@
         <h2> Formulário para Cadastro na Sociedade Esportiva Palmeiras </h2> <br> <br> <br>
         <div id="formulario">
             <form id="form" onsubmit="gravaTorcedor(event)">
+                <input type="hidden" id="id-torcedor" name="id-torcedor">
                 <label> Digite o seu nome: </label>
                 <input type="text" id="nome" name="nome"> <br> <br>
                 <p id="erronome" class="neg mensagem-erro mb-10">
@@ -75,8 +76,12 @@
                     O texto deve ser uma URL
                 </p>
                 <button type="submit" name="submit" id="button" disabled> Enviar dados </button> <br> <br>
+                <button id="button-editar" onclick="atualizaTorcedor()"> Editar dados </button> <br> <br>
                 <p id="grava-sucess">Torcedor cadastrado com sucesso no MySQL</p> <br>
                 <p id="grava-falha">Falha ao cadastrar torcedor no MySQL</p>
+
+                <p id="edita-sucess">Torcedor editado com sucesso no MySQL</p> <br>
+                <p id="edita-falha">Falha ao editar torcedor no MySQL</p>
             </form>
         </div>
     </section> <br> <br>

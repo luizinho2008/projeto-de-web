@@ -218,7 +218,7 @@ input[type="file"] {
     border-color: #3e8e41;
 }
 
-#button {
+#button, #button-editar {
     width: 100%;
     border-radius: 20px;
     height: 75px;
@@ -230,6 +230,10 @@ input[type="file"] {
     background-image: linear-gradient(to left, var(--cor1), var(--cor3));
     border: 5px solid white;
     color: white;
+}
+
+#button-editar {
+    display: none;
 }
 
 #map {
@@ -255,6 +259,18 @@ input[type="file"] {
 }
 
 #grava-sucess, #grava-falha {
+    background-color: rgb(33, 0, 221);
+    color: white;
+    font-weight: bolder;
+    font-size: 30px;
+    height: 50px;
+    border-radius: 20px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+#edita-sucess, #edita-falha {
     background-color: rgb(33, 0, 221);
     color: white;
     font-weight: bolder;

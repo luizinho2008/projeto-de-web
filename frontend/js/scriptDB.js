@@ -22,7 +22,7 @@ const exibeTorcedores = (resposta) => {
                     <h2 class='torcedor-info'>(Nome: ${torcedor.nome}) (Telefone: ${torcedor.telefone}) (Email: ${torcedor.email})</h2>
                     <div class='buttons'>
                         <button class='deleta' onclick='deletaTorcedor(${torcedor.id})'>Deletar</button> <br> <br>
-                        <button class='edita' onclick='editaTorcedor(${torcedor.id})'>Editar</button>
+                        <a href='#formulario'><button class='edita' onclick='editaTorcedor(${torcedor.id})'>Editar</button></a>
                     </div>    
                 </div>`;
     });
@@ -99,3 +99,70 @@ const deletaTorcedor = (id) => {
         });
     }
 };
+
+const editaTorcedor = (id) => {
+    const api = `http://localhost:8000/api/torcedores/${id}`;
+    fetch(api)
+    .then(resposta => {
+        return resposta.json();
+    })
+    .then(resposta => {
+        document.getElementById("id-torcedor").value = id;
+        document.getElementById("nome").value = resposta[0].nome;
+        document.getElementById("email").value = resposta[0].email;
+        document.getElementById("telefone").value = resposta[0].telefone;
+        document.getElementById("linkImagem").value = resposta[0].imagem;
+
+        document.getElementById("button").style.display = "none";
+        document.getElementById("button-editar").style.display = "block";
+    })
+    .catch(erro => {
+        console.log(erro);
+    });
+}
+
+const atualizaTorcedor = () => {
+    const id = document.getElementById('id-torcedor').value;
+    const dados = {
+        nome: document.getElementById('nome').value,
+        email: document.getElementById('email').value,
+        telefone: document.getElementById('telefone').value,
+        linkImagem: document.getElementById('linkImagem').value
+    };
+    const api = `http://localhost:8000/api/torcedores/${id}`;
+    fetch(api, {
+        method: 'PUT',
+        headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer your-token-here',
+        },
+        body: JSON.stringify(dados),
+    })
+    .then((response) => {
+    if (!response.ok) {
+        throw new Error('Erro na requisição');
+    }
+    return response.json();
+    })
+    .then((data) => {
+        console.log('Sucesso:', data);
+        document.getElementById("form").reset();
+        
+        carregaTorcedores();
+        document.getElementById("button").style.display = "block";
+        document.getElementById("button-editar").style.display = "none";
+
+        document.getElementById("edita-sucess").style.display = "flex";
+        setTimeout(() => {
+            document.getElementById("edita-sucess").style.display = "none";
+        }, 2500);
+    })
+    .catch((error) => {
+        console.error('Erro:', error);
+        carregaTorcedores();
+        document.getElementById("edita-falha").style.display = "flex";
+        setTimeout(() => {
+            document.getElementById("edita-falha").style.display = "none";
+        }, 2500);
+    });
+}
