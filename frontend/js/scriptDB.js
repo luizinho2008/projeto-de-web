@@ -31,45 +31,31 @@ const exibeTorcedores = (resposta) => {
 
 const gravaTorcedor = (event) => {
     event.preventDefault();
-    const id = document.getElementById('id-torcedor').value;
     const dados = {
         nome: document.getElementById('nome').value,
         email: document.getElementById('email').value,
         telefone: document.getElementById('telefone').value,
         linkImagem: document.getElementById('linkImagem').value
     };
-
-    let api;
-    let method;
-
-    if(id) {
-        api = `http://localhost:8000/api/torcedores/${id}`;
-        method = 'PUT';
-    } else {
-        api = 'http://localhost:8000/api/torcedores';
-        method = 'POST';
-    }
-
+    const api = 'http://localhost:8000/api/torcedores';
     fetch(api, {
-        method: method,
+        method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer your-token-here',
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer your-token-here',
         },
         body: JSON.stringify(dados),
     })
     .then((response) => {
-        if (!response.ok) {
-            throw new Error('Erro na requisição');
-        }
-        return response.json();
+    if (!response.ok) {
+        throw new Error('Erro na requisição');
+    }
+    return response.json();
     })
     .then((data) => {
         console.log('Sucesso:', data);
         document.getElementById("form").reset();
         carregaTorcedores();
-        document.getElementById("button").style.display = "block";
-        document.getElementById("button-editar").style.display = "none";
         document.getElementById("grava-sucess").style.display = "flex";
         setTimeout(() => {
             document.getElementById("grava-sucess").style.display = "none";
@@ -106,10 +92,20 @@ const deletaTorcedor = (id) => {
         .then((data) => {
             console.log('Sucesso:', data);
             carregaTorcedores();
+
+            document.getElementById("deleta-sucess").style.display = "flex";
+            setTimeout(() => {
+                document.getElementById("deleta-sucess").style.display = "none";
+            }, 2500);
         })
         .catch((error) => {
             console.error('Erro:', error);
             carregaTorcedores();
+
+            document.getElementById("deleta-falha").style.display = "flex";
+            setTimeout(() => {
+                document.getElementById("deleta-falha").style.display = "none";
+            }, 2500);
         });
     }
 };
@@ -132,5 +128,51 @@ const editaTorcedor = (id) => {
     })
     .catch(erro => {
         console.log(erro);
+    });
+}
+
+const atualizaTorcedor = () => {
+    const id = document.getElementById('id-torcedor').value;
+    const dados = {
+        nome: document.getElementById('nome').value,
+        email: document.getElementById('email').value,
+        telefone: document.getElementById('telefone').value,
+        linkImagem: document.getElementById('linkImagem').value
+    };
+    const api = `http://localhost:8000/api/torcedores/${id}`;
+    fetch(api, {
+        method: 'PUT',
+        headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer your-token-here',
+        },
+        body: JSON.stringify(dados),
+    })
+    .then((response) => {
+    if (!response.ok) {
+        throw new Error('Erro na requisição');
+    }
+    return response.json();
+    })
+    .then((data) => {
+        console.log('Sucesso:', data);
+        document.getElementById("form").reset();
+        
+        carregaTorcedores();
+        document.getElementById("button").style.display = "block";
+        document.getElementById("button-editar").style.display = "none";
+
+        document.getElementById("edita-sucess").style.display = "flex";
+        setTimeout(() => {
+            document.getElementById("edita-sucess").style.display = "none";
+        }, 2500);
+    })
+    .catch((error) => {
+        console.error('Erro:', error);
+        carregaTorcedores();
+        document.getElementById("edita-falha").style.display = "flex";
+        setTimeout(() => {
+            document.getElementById("edita-falha").style.display = "none";
+        }, 2500);
     });
 }

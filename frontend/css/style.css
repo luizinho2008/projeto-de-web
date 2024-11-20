@@ -282,6 +282,20 @@ input[type="file"] {
     align-items: center;
 }
 
+#deleta-sucess, #deleta-falha {
+    background-color: rgb(33, 0, 221);
+    color: white;
+    font-weight: bolder;
+    width: 90%;
+    margin-left: 5%;
+    font-size: 30px;
+    height: 50px;
+    border-radius: 20px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
 @media (max-width: 768px) {
     
     body {
