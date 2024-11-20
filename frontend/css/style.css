@@ -93,6 +93,11 @@ h2 {
     border-radius: 20px;
     margin: 20px auto;
     padding: 20px;
+    height: 530px;
+}
+
+#endereco {
+    margin-top: 3%;
 }
 
 .torcedor-item {
