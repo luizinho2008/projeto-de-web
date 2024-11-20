@@ -54,7 +54,7 @@ app.delete("/api/torcedores/:id", (req, res) => {
     const sql = `DELETE FROM torcedores WHERE id = ${req.params.id};`;
     db.query(sql, (erro, resultados) => {
         if (erro) {
-            res.send("<h2>Falha ao inserir torcedor no MySQL</h2>");
+            res.send("<h2>Falha ao deletar torcedor no MySQL</h2>");
         }
         else {
             res.send(resultados);
