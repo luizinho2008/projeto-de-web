@@ -25,6 +25,18 @@ app.get("/api/torcedores", (req, res) => {
     });
 });
 
+app.post("/api/usuarios", (req, res) => {
+    const sql = `INSERT INTO usuarios(email, senha) VALUES('${req.body.email}', '${req.body.senha}');`;
+    db.query(sql, (erro, resultados) => {
+        if (erro) {
+            res.send("<h2>Falha ao inserir usuário no MySQL</h2>");
+        }
+        else {
+            res.send(resultados);
+        }
+    });
+});
+
 app.get("/api/torcedores/:id", (req, res) => {
     const sql = `SELECT * FROM torcedores WHERE id = ${req.params.id};`;
     db.query(sql, (erro, resultados) => {
