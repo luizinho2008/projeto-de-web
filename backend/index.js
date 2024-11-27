@@ -13,6 +13,32 @@ app.get("/", (req, res) => {
     res.send("<h2>Site para cadastro de torcedores do palmeiras</h2>");
 });
 
+app.post("/api/authenticate", (req, res) => {
+    const sql = `SELECT * FROM usuarios WHERE
+    email = '${req.body.email}' and senha = '${req.body.senha}'`;
+
+    db.query(sql, (erro, resultados) => {
+        if (erro) {
+            console.log("Erro ao consultar o banco de dados:", erro);
+            res.send("<h2>Falha ao fazer a consulta no MySQL</h2>");
+        } else {
+            if (resultados.length == 1) {
+                const user = resultados[0];
+                res.json({
+                    success: true,
+                    message: "Autenticação bem-sucedida",
+                    user: {
+                        nome: user.nome, 
+                        email: user.email,
+                    }
+                });
+            } else {
+                res.status(401).json({ success: false, message: "Email ou senha inválidos" });
+            }
+        }
+    });
+});
+
 app.get("/api/torcedores", (req, res) => {
     const sql = `SELECT * FROM torcedores;`;
     db.query(sql, (erro, resultados) => {

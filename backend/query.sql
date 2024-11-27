@@ -3,9 +3,18 @@ USE SEP;
 
 CREATE TABLE usuarios (
     id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(250),
     email VARCHAR(100),
     senha VARCHAR(20)
 );
+
+INSERT INTO usuarios(nome, email, senha) VALUES
+('Zigmunt Bauman', 'zigmuntbauman@gmail.com', 'senha123'),
+('Maria Oliveira', 'mariaoliveira@gmail.com', 'senha456'),
+('Carlos Moreira', 'carlospereira@gmail.com', 'senha789'),
+('Ana Souza', 'anasouza@gmail.com', 'senha101'),
+('Lucas Costa', 'lucascosta@gmail.com', 'senha202');
+
 
 CREATE TABLE torcedores (
     id INT PRIMARY KEY AUTO_INCREMENT,

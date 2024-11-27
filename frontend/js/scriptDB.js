@@ -1,3 +1,43 @@
+const authenticate = (event) => {
+    event.preventDefault();
+    const dados = {
+        email: document.getElementById('e-mail').value,
+        senha: document.getElementById('senha').value,
+    };
+    const api = 'http://localhost:8000/api/authenticate';
+    fetch(api, {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer your-token-here',
+        },
+        body: JSON.stringify(dados),
+    })
+    .then((response) => {
+    if (!response.ok) {
+        throw new Error('Erro na requisição');
+    }
+    return response.json();
+    })
+    .then((data) => {
+        console.log(`Dados: ${data}`);
+        document.getElementById('mensagemErro').style.display = 'none';
+
+        document.getElementById("login").style.display = "none";
+        document.getElementById("site").style.display = "block";
+
+        document.getElementById("principal").innerHTML = `Iaê ${data.user.nome}<br>Quer jogar no maior do Brasil?`;
+    })
+    .catch((error) => {
+        console.log(`Erro: ${error}`);
+        document.getElementById('mensagemErro').innerHTML = "Email ou senha incorretos";
+        setTimeout(() => {
+            document.getElementById("mensagemErro").style.display = "none";
+        }, 2500);
+        document.getElementById('mensagemErro').style.display = 'flex';
+    });
+};
+
 const carregaTorcedores = () => {
     const api = "http://localhost:8000/api/torcedores";
     fetch(api)
