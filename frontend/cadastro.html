@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <title> Seja nosso jogador: Palmeiras </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="imgs/palmeiras.png" type="image/png">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/basic.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+</head>
+<body>
+    <div id="login">
+        <h1 style="font-style: italic;">Faça cadastro no site do maior do Brasil</h1>
+        
+        <form id="formCad" onsubmit="gravaUsuario(event)">
+            <label>Nome: </label>
+            <input type="text" id="nome" name="nome"> <br> <br>
+
+            <label>Email: </label>
+            <input type="text" id="email" name="email"> <br> <br>
+
+            <label>Senha: </label>
+            <input type="password" id="senha" name="senha"> <br> <br>
+
+            <button type="submit" id="buttonCad">Enviar</button> <br> <br>
+
+            <p id="mensagemErro"></p>
+        </form>
+    </div>
+    <script src="js/scriptDB.js"></script>
+</body>

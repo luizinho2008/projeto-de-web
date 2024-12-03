@@ -223,7 +223,7 @@ input[type="file"] {
     border-color: #3e8e41;
 }
 
-#button, #button-editar, #buttonLogin {
+#button, #button-editar, #buttonLogin, #buttonCad {
     width: 100%;
     border-radius: 20px;
     height: 75px;
@@ -342,7 +342,7 @@ input[type="file"] {
     width: 200px;
     cursor: pointer;
 }
-#formLogin {
+#formLogin, #formCad {
     margin-top: 5%;
     background-color: var(--cor3);
     border-radius: 20px;

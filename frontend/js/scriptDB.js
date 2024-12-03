@@ -38,6 +38,39 @@ const authenticate = (event) => {
     });
 };
 
+const gravaUsuario = (event) => {
+    event.preventDefault();
+    const dados = {
+        nome: document.getElementById('nome').value,
+        email: document.getElementById('email').value,
+        senha: document.getElementById('senha').value
+    };
+    const api = 'http://localhost:8000/api/usuarios';
+    fetch(api, {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer your-token-here',
+        },
+        body: JSON.stringify(dados),
+    })
+    .then((response) => {
+    if (!response.ok) {
+        throw new Error('Erro na requisição');
+    }
+    return response.json();
+    })
+    .then((data) => {
+        console.log('Sucesso:', data);
+        location.href = "http://127.0.0.1:5500/frontend/principal.html";
+    })
+    .catch((error) => {
+        console.error('Erro:', error);
+        carregaTorcedores();
+        alert("Falha ao cadastrar usuário");
+    });
+};
+
 const carregaTorcedores = () => {
     const api = "http://localhost:8000/api/torcedores";
     fetch(api)

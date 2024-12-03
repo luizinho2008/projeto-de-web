@@ -52,7 +52,7 @@ app.get("/api/torcedores", (req, res) => {
 });
 
 app.post("/api/usuarios", (req, res) => {
-    const sql = `INSERT INTO usuarios(email, senha) VALUES('${req.body.email}', '${req.body.senha}');`;
+    const sql = `INSERT INTO usuarios(nome, email, senha) VALUES('${req.body.nome}', '${req.body.email}', '${req.body.senha}');`;
     db.query(sql, (erro, resultados) => {
         if (erro) {
             res.send("<h2>Falha ao inserir usuário no MySQL</h2>");
