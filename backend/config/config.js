@@ -2,7 +2,7 @@ const mysql = require("mysql");
 
 const host = "localhost";
 const user = "root";
-const password = "";
+const password = "ifsp";
 const database = "SEP";
 
 const connexionDB = mysql.createConnection({

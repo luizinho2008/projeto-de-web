@@ -5,7 +5,7 @@ CREATE TABLE usuarios (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(250),
     email VARCHAR(100),
-    senha VARCHAR(20)
+    senha TEXT
 );
 
 INSERT INTO usuarios(nome, email, senha) VALUES
