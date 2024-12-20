@@ -4,8 +4,7 @@ const cors = require("cors");
 let bcrypt;
 try {
     bcrypt = require("bcrypt");
-} catch (err) {
-    console.warn("Erro ao carregar bcrypt nativo. Usando bcryptjs como fallback.");
+} catch {
     bcrypt = require("bcryptjs");
 }
 
@@ -13,9 +12,8 @@ const PORT = process.env.PORT || 8000;
 
 const app = express();
 app.use(cors());
-
 app.use(express.json());
-app.set('json spaces', 2);
+app.set("json spaces", 2);
 
 app.get("/", (req, res) => {
     res.send("<h2>Site para cadastro de torcedores do Palmeiras</h2>");
@@ -23,53 +21,36 @@ app.get("/", (req, res) => {
 
 app.post("/api/authenticate", (req, res) => {
     const { email, senha } = req.body;
-
-    const sql = `SELECT * FROM usuarios WHERE email = '${email}'`;
-
-    db.query(sql, (erro, resultados) => {
+    const sql = "SELECT * FROM usuarios WHERE email = ?";
+    db.query(sql, [email], (erro, resultados) => {
         if (erro) {
-            console.log("Erro ao consultar o banco de dados:", erro);
             res.status(500).send("<h2>Falha ao fazer a consulta no MySQL</h2>");
+        } else if (resultados.length === 1) {
+            const user = resultados[0];
+            bcrypt.compare(senha, user.senha, (err, isMatch) => {
+                if (err) {
+                    res.status(500).send("<h2>Erro ao verificar a senha</h2>");
+                } else if (isMatch) {
+                    res.json({ success: true, message: "Autenticação bem-sucedida", user: { nome: user.nome, email: user.email } });
+                } else {
+                    res.status(401).json({ success: false, message: "Email ou senha inválidos" });
+                }
+            });
         } else {
-            if (resultados.length === 1) {
-                const user = resultados[0];
-
-                bcrypt.compare(senha, user.senha, (err, isMatch) => {
-                    if (err) {
-                        console.log("Erro ao comparar as senhas:", err);
-                        res.status(500).send("<h2>Erro ao verificar a senha</h2>");
-                    } else if (isMatch) {
-                        res.json({
-                            success: true,
-                            message: "Autenticação bem-sucedida",
-                            user: {
-                                nome: user.nome, 
-                                email: user.email,
-                            }
-                        });
-                    } else {
-                        res.status(401).json({ success: false, message: "Email ou senha inválidos" });
-                    }
-                });
-            } else {
-                res.status(401).json({ success: false, message: "Email ou senha inválidos" });
-            }
+            res.status(401).json({ success: false, message: "Email ou senha inválidos" });
         }
     });
 });
 
 app.post("/api/usuarios", (req, res) => {
     const { nome, email, senha } = req.body;
-
     bcrypt.hash(senha, 10, (err, hash) => {
         if (err) {
-            console.log("Erro ao gerar o hash da senha:", err);
             res.status(500).send("<h2>Erro ao gerar o hash da senha</h2>");
         } else {
-            const sql = `INSERT INTO usuarios(nome, email, senha) VALUES('${nome}', '${email}', '${hash}')`;
-            db.query(sql, (erro, resultados) => {
+            const sql = "INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)";
+            db.query(sql, [nome, email, hash], (erro, resultados) => {
                 if (erro) {
-                    console.log("Erro ao inserir o usuário no banco:", erro);
                     res.status(500).send("<h2>Falha ao inserir usuário no MySQL</h2>");
                 } else {
                     res.status(201).send(resultados);
@@ -80,10 +61,10 @@ app.post("/api/usuarios", (req, res) => {
 });
 
 app.get("/api/torcedores", (req, res) => {
-    const sql = `SELECT * FROM torcedores;`;
+    const sql = "SELECT * FROM torcedores";
     db.query(sql, (erro, resultados) => {
         if (erro) {
-            res.status(500).send("<h2>Falha ao fazer a consulta no MySQL</h2>" + erro);
+            res.status(500).send("<h2>Falha ao fazer a consulta no MySQL</h2>");
         } else {
             res.json(resultados);
         }
@@ -92,10 +73,8 @@ app.get("/api/torcedores", (req, res) => {
 
 app.post("/api/torcedores", (req, res) => {
     const { nome, email, telefone, linkImagem } = req.body;
-    const sql = `INSERT INTO torcedores(nome, email, telefone, imagem)
-        VALUES('${nome}', '${email}', '${telefone}', '${linkImagem}')`;
-
-    db.query(sql, (erro, resultados) => {
+    const sql = "INSERT INTO torcedores (nome, email, telefone, imagem) VALUES (?, ?, ?, ?)";
+    db.query(sql, [nome, email, telefone, linkImagem], (erro, resultados) => {
         if (erro) {
             res.status(500).send("<h2>Falha ao inserir torcedor no MySQL</h2>");
         } else {
@@ -105,8 +84,8 @@ app.post("/api/torcedores", (req, res) => {
 });
 
 app.get("/api/torcedores/:id", (req, res) => {
-    const sql = `SELECT * FROM torcedores WHERE id = ${req.params.id};`;
-    db.query(sql, (erro, resultados) => {
+    const sql = "SELECT * FROM torcedores WHERE id = ?";
+    db.query(sql, [req.params.id], (erro, resultados) => {
         if (erro) {
             res.status(500).send("<h2>Falha ao fazer a consulta no MySQL</h2>");
         } else {
@@ -117,12 +96,8 @@ app.get("/api/torcedores/:id", (req, res) => {
 
 app.put("/api/torcedores/:id", (req, res) => {
     const { nome, email, telefone, linkImagem } = req.body;
-    const sql = `UPDATE torcedores SET 
-        nome = '${nome}', email = '${email}', 
-        telefone = '${telefone}', 
-        imagem = '${linkImagem}' WHERE id = ${req.params.id};`;
-
-    db.query(sql, (erro, resultados) => {
+    const sql = "UPDATE torcedores SET nome = ?, email = ?, telefone = ?, imagem = ? WHERE id = ?";
+    db.query(sql, [nome, email, telefone, linkImagem, req.params.id], (erro, resultados) => {
         if (erro) {
             res.status(500).send("<h2>Falha ao atualizar torcedor no MySQL</h2>");
         } else {
@@ -132,8 +107,8 @@ app.put("/api/torcedores/:id", (req, res) => {
 });
 
 app.delete("/api/torcedores/:id", (req, res) => {
-    const sql = `DELETE FROM torcedores WHERE id = ${req.params.id};`;
-    db.query(sql, (erro, resultados) => {
+    const sql = "DELETE FROM torcedores WHERE id = ?";
+    db.query(sql, [req.params.id], (erro, resultados) => {
         if (erro) {
             res.status(500).send("<h2>Falha ao deletar torcedor no MySQL</h2>");
         } else {
