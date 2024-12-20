@@ -1,7 +1,14 @@
 const express = require("express");
 const db = require("./config/config");
 const cors = require("cors");
-const bcrypt = require("bcrypt");
+let bcrypt;
+try {
+    bcrypt = require("bcrypt");
+} catch (err) {
+    console.warn("Erro ao carregar bcrypt nativo. Usando bcryptjs como fallback.");
+    bcrypt = require("bcryptjs");
+}
+
 const PORT = process.env.PORT || 8000;
 
 const app = express();
@@ -26,7 +33,7 @@ app.post("/api/authenticate", (req, res) => {
         } else {
             if (resultados.length === 1) {
                 const user = resultados[0];
-                
+
                 bcrypt.compare(senha, user.senha, (err, isMatch) => {
                     if (err) {
                         console.log("Erro ao comparar as senhas:", err);
