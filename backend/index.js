@@ -83,7 +83,7 @@ app.get("/api/torcedores", (req, res) => {
     const sql = `SELECT * FROM torcedores;`;
     db.query(sql, (erro, resultados) => {
         if (erro) {
-            res.status(500).send("<h2>Falha ao fazer a consulta no MySQL</h2>");
+            res.status(500).send("<h2>Falha ao fazer a consulta no MySQL</h2>" + erro);
         } else {
             res.json(resultados);
         }
