@@ -21,4 +21,6 @@ connexionDB.connect((erro) => {
     else {
         console.log(`Conexão efetuada com sucesso com o MySQL`);
     }
-})
+});
+
+module.exports = connexionDB;
