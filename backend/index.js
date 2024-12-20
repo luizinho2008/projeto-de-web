@@ -2,7 +2,7 @@ const express = require("express");
 const db = require("./config/config");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
 const app = express();
 app.use(cors());
