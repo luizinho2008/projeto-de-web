@@ -45,7 +45,7 @@ const gravaUsuario = (event) => {
         email: document.getElementById('email').value,
         senha: document.getElementById('senha').value
     };
-    const api = 'http://https://projeto-de-web-2024.onrender.com/api/usuarios';
+    const api = 'https://projeto-de-web-2024.onrender.com/api/usuarios';
     fetch(api, {
         method: 'POST',
         headers: {
@@ -72,7 +72,7 @@ const gravaUsuario = (event) => {
 };
 
 const carregaTorcedores = () => {
-    const api = "http://https://projeto-de-web-2024.onrender.com/api/torcedores";
+    const api = "https://projeto-de-web-2024.onrender.com/api/torcedores";
     fetch(api)
     .then(resposta => {
         return resposta.json();
@@ -110,7 +110,7 @@ const gravaTorcedor = (event) => {
         telefone: document.getElementById('telefone').value,
         linkImagem: document.getElementById('linkImagem').value
     };
-    const api = 'http://https://projeto-de-web-2024.onrender.com/api/torcedores';
+    const api = 'https://projeto-de-web-2024.onrender.com/api/torcedores';
     fetch(api, {
         method: 'POST',
         headers: {
@@ -148,7 +148,7 @@ const deletaTorcedor = (id) => {
     const decisao = confirm("Você realmente deseja apagar esse torcedor?");
 
     if(decisao) {
-        const api = `http://https://projeto-de-web-2024.onrender.com/api/torcedores/${id}`;
+        const api = `https://projeto-de-web-2024.onrender.com/api/torcedores/${id}`;
         fetch(api, {
             method: 'DELETE',
             headers: {
@@ -184,7 +184,7 @@ const deletaTorcedor = (id) => {
 };
 
 const editaTorcedor = (id) => {
-    const api = `http://https://projeto-de-web-2024.onrender.com/api/torcedores/${id}`;
+    const api = `https://projeto-de-web-2024.onrender.com/api/torcedores/${id}`;
     fetch(api)
     .then(resposta => {
         return resposta.json();
@@ -212,7 +212,7 @@ const atualizaTorcedor = () => {
         telefone: document.getElementById('telefone').value,
         linkImagem: document.getElementById('linkImagem').value
     };
-    const api = `http://https://projeto-de-web-2024.onrender.com/api/torcedores/${id}`;
+    const api = `https://projeto-de-web-2024.onrender.com/api/torcedores/${id}`;
     fetch(api, {
         method: 'PUT',
         headers: {
