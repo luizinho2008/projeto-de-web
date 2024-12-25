@@ -14,7 +14,9 @@ const PORT = process.env.PORT || 8000;
 const app = express();
 
 app.use(cors({
-    origin: "https://projeto-de-web.vercel.app", // Substitua pela URL do frontend
+    origin: ["https://projeto-de-web.vercel.app",
+        "http://localhost:5173"
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true, // Permite o envio de cookies
 }));
