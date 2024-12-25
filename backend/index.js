@@ -17,6 +17,7 @@ const app = express();
 app.use(cors({
     origin: ["https://projeto-de-web.vercel.app", "http://localhost:5173"],
     methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true, // Permite o envio de cookies
 }));
 
