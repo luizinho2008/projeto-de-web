@@ -1,4 +1,5 @@
 const express = require("express");
+const session = require("express-session");
 const db = require("./config/config");
 const cors = require("cors");
 let bcrypt;
@@ -11,9 +12,26 @@ try {
 const PORT = process.env.PORT || 8000;
 
 const app = express();
-app.use(cors());
+
+app.use(cors({
+    origin: "http://localhost:5173", // Substitua pela URL do frontend
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true, // Permite o envio de cookies
+}));
+
 app.use(express.json());
 app.set("json spaces", 2);
+
+app.use(session({
+    secret: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b8552c541e2e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b8552c541e',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        secure: false, // true se estiver usando HTTPS
+        httpOnly: true,
+        sameSite: 'lax', // Ajusta conforme a necessidade
+    },
+}));
 
 app.get("/", (req, res) => {
     res.send("<h2>Site para cadastro de torcedores do Palmeiras</h2>");
@@ -31,7 +49,19 @@ app.post("/api/authenticate", (req, res) => {
                 if (err) {
                     res.status(500).send("<h2>Erro ao verificar a senha</h2>");
                 } else if (isMatch) {
-                    res.json({ success: true, message: "Autenticação bem-sucedida", user: { nome: user.nome, email: user.email } });
+                    // Armazena os dados do usuário na sessão
+                    req.session.user = {
+                        nome: user.nome,
+                        email: user.email
+                    };
+
+                    console.log(req.session.user);
+
+                    res.json({ 
+                        success: true, 
+                        message: "Autenticação bem-sucedida", 
+                        user: { nome: user.nome, email: user.email } 
+                    });
                 } else {
                     res.status(401).json({ success: false, message: "Email ou senha inválidos" });
                 }
@@ -40,6 +70,17 @@ app.post("/api/authenticate", (req, res) => {
             res.status(401).json({ success: false, message: "Email ou senha inválidos" });
         }
     });
+});
+
+app.get("/api/session", (req, res) => {
+    if (req.session.user) {
+        res.json({ 
+            success: true, 
+            user: req.session.user 
+        });
+    } else {
+        res.status(401).json({ success: false, message: "Nenhum usuário logado" });
+    }
 });
 
 app.post("/api/usuarios", (req, res) => {
