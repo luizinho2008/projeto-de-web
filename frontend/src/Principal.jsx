@@ -13,7 +13,7 @@ const Principal = () => {
 
   useEffect(() => {
     console.log("Verificando sessão...");
-    axios.get('http://localhost:8000/api/session', { withCredentials: true })
+    axios.get('https://projeto-de-web-2024.onrender.com/api/session', { withCredentials: true })
       .then((resposta) => {
         console.log("Resposta da sessão:", resposta.data);
         if (!resposta.data?.user?.nome) {
@@ -32,7 +32,7 @@ const Principal = () => {
 
   useEffect(() => {
     console.log("Verificando sessão...");
-    axios.get('http://localhost:8000/api/torcedores')
+    axios.get('https://projeto-de-web-2024.onrender.com/api/torcedores')
     .then(resposta => {
       console.log(resposta.data);
       setTorcedores(resposta.data);
@@ -46,7 +46,7 @@ const Principal = () => {
 
   const newTorcedor = (event) => {
     event.preventDefault();
-    axios.post('http://localhost:8000/api/torcedores', {nome, email, telefone, linkImagem})
+    axios.post('https://projeto-de-web-2024.onrender.com/api/torcedores', {nome, email, telefone, linkImagem})
     .then(resposta => {
       location.reload();
     })

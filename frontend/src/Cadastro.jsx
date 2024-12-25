@@ -13,7 +13,7 @@ const Cadastro = () => {
     const newUser = (event) => {
         event.preventDefault();
 
-        axios.post('http://localhost:8000/api/usuarios', {
+        axios.post('https://projeto-de-web-2024.onrender.com/api/usuarios', {
             nome,
             email,
             senha,

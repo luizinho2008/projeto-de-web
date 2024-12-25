@@ -14,7 +14,7 @@ const Login = () => {
 
         try {
             const response = await axios.post(
-                'http://localhost:8000/api/authenticate',
+                'https://projeto-de-web-2024.onrender.com/api/authenticate',
                 { email, senha },
                 { withCredentials: true }
             );

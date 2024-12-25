@@ -11,7 +11,7 @@ function Deleta() {
     // Função para deletar o torcedor
     const deletaTorcedor = async () => {
       try {
-        await axios.delete(`http://localhost:8000/api/torcedores/${id}`);
+        await axios.delete(`https://projeto-de-web-2024.onrender.com/api/torcedores/${id}`);
         console.log("Deletado com sucesso");
         setRedirectToSite(true);  // Atualiza o estado para redirecionar
       } catch (error) {
