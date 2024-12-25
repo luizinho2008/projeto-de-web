@@ -1,7 +1,6 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import './Login.css';
-import { Link, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Login = () => {
@@ -16,7 +15,7 @@ const Login = () => {
             const response = await axios.post(
                 'https://projeto-de-web-2024.onrender.com/api/authenticate',
                 { email, senha },
-                { withCredentials: true }
+                { withCredentials: true }  // Permite o envio de cookies para o servidor
             );
 
             if (response.status === 200) {
@@ -37,15 +36,27 @@ const Login = () => {
 
             <form id="form" onSubmit={newUser}>
                 <label>Email: </label>
-                <input type="text" id="email" name="email" onInput={(e) => setEmail(e.target.value)}/> <br/> <br/>
+                <input
+                    type="text"
+                    id="email"
+                    name="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                /> <br/> <br/>
 
                 <label>Senha: </label>
-                <input type="password" id="senha" name="senha" onInput={(e) => setSenha(e.target.value)}/> <br/> <br/>
+                <input
+                    type="password"
+                    id="senha"
+                    name="senha"
+                    value={senha}
+                    onChange={(e) => setSenha(e.target.value)}
+                /> <br/> <br/>
 
                 <button type="submit" id="buttonLogin">Enviar</button>
             </form>
         </div>
     );
-}
+};
 
 export default Login;

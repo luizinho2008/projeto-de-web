@@ -13,10 +13,9 @@ const PORT = process.env.PORT || 8000;
 
 const app = express();
 
+// Configuração do CORS para permitir cookies
 app.use(cors({
-    origin: ["https://projeto-de-web.vercel.app",
-        "http://localhost:5173"
-    ],
+    origin: ["https://projeto-de-web.vercel.app", "http://localhost:5173"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true, // Permite o envio de cookies
 }));
@@ -24,6 +23,7 @@ app.use(cors({
 app.use(express.json());
 app.set("json spaces", 2);
 
+// Configuração do Express Session
 app.use(session({
     secret: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b8552c541e2e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b8552c541e',
     resave: false,
@@ -35,10 +35,12 @@ app.use(session({
     },
 }));
 
+// Rota inicial
 app.get("/", (req, res) => {
     res.send("<h2>Site para cadastro de torcedores do Palmeiras</h2>");
 });
 
+// Rota de autenticação
 app.post("/api/authenticate", (req, res) => {
     const { email, senha } = req.body;
     const sql = "SELECT * FROM usuarios WHERE email = ?";
@@ -57,7 +59,7 @@ app.post("/api/authenticate", (req, res) => {
                         email: user.email
                     };
 
-                    console.log(req.session.user);
+                    console.log(req.session.user);  // Verifique se a sessão está sendo armazenada
 
                     res.json({ 
                         success: true, 
@@ -74,6 +76,7 @@ app.post("/api/authenticate", (req, res) => {
     });
 });
 
+// Rota para verificar a sessão do usuário
 app.get("/api/session", (req, res) => {
     if (req.session.user) {
         res.json({ 
@@ -85,6 +88,7 @@ app.get("/api/session", (req, res) => {
     }
 });
 
+// Rota para cadastro de novos usuários
 app.post("/api/usuarios", (req, res) => {
     const { nome, email, senha } = req.body;
     bcrypt.hash(senha, 10, (err, hash) => {
@@ -103,6 +107,7 @@ app.post("/api/usuarios", (req, res) => {
     });
 });
 
+// Rota para obter todos os torcedores
 app.get("/api/torcedores", (req, res) => {
     const sql = "SELECT * FROM torcedores";
     db.query(sql, (erro, resultados) => {
@@ -114,6 +119,7 @@ app.get("/api/torcedores", (req, res) => {
     });
 });
 
+// Rota para adicionar um novo torcedor
 app.post("/api/torcedores", (req, res) => {
     const { nome, email, telefone, linkImagem } = req.body;
     const sql = "INSERT INTO torcedores (nome, email, telefone, imagem) VALUES (?, ?, ?, ?)";
@@ -126,6 +132,7 @@ app.post("/api/torcedores", (req, res) => {
     });
 });
 
+// Rota para obter um torcedor por ID
 app.get("/api/torcedores/:id", (req, res) => {
     const sql = "SELECT * FROM torcedores WHERE id = ?";
     db.query(sql, [req.params.id], (erro, resultados) => {
@@ -137,6 +144,7 @@ app.get("/api/torcedores/:id", (req, res) => {
     });
 });
 
+// Rota para atualizar um torcedor por ID
 app.put("/api/torcedores/:id", (req, res) => {
     const { nome, email, telefone, linkImagem } = req.body;
     const sql = "UPDATE torcedores SET nome = ?, email = ?, telefone = ?, imagem = ? WHERE id = ?";
@@ -149,6 +157,7 @@ app.put("/api/torcedores/:id", (req, res) => {
     });
 });
 
+// Rota para deletar um torcedor por ID
 app.delete("/api/torcedores/:id", (req, res) => {
     const sql = "DELETE FROM torcedores WHERE id = ?";
     db.query(sql, [req.params.id], (erro, resultados) => {
@@ -160,6 +169,7 @@ app.delete("/api/torcedores/:id", (req, res) => {
     });
 });
 
+// Inicia o servidor
 app.listen(PORT, () => {
     console.log(`Servidor rodando na URL http://localhost:${PORT}`);
 });
