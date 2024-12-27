@@ -13,23 +13,24 @@ const PORT = process.env.PORT || 8000;
 
 const app = express();
 
-// Configuração do CORS para permitir cookies
+// Configuração do CORS para permitir cookies entre domínios
 app.use(cors({
-    origin: ["https://projeto-de-web.vercel.app"], // Domínio do frontend
+    origin: ["https://projeto-de-web.vercel.app", "http://localhost:5173"],  // Substitua pelo domínio correto
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true, // Permite o envio de cookies
 }));
 
 app.use(express.json());
+app.set("json spaces", 2);
 
 // Configuração do Express Session
 app.use(session({
-    secret: 'chave_secreta_forte_aqui', // Substitua por uma chave secreta forte
+    secret: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b8552c541e2e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b8552c541e',
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: {
-        secure: true, // Habilitar apenas para HTTPS
+        secure: process.env.NODE_ENV === 'production', // true se estiver usando HTTPS
         httpOnly: true,
         sameSite: 'none', // Necessário para cookies entre domínios
     },
@@ -59,7 +60,7 @@ app.post("/api/authenticate", (req, res) => {
                         email: user.email
                     };
 
-                    console.log(req.session.user); // Verifique se a sessão está sendo armazenada
+                    console.log(req.session.user);  // Verifique se a sessão está sendo armazenada
 
                     res.json({ 
                         success: true, 
@@ -87,6 +88,8 @@ app.get("/api/session", (req, res) => {
         res.status(401).json({ success: false, message: "Nenhum usuário logado" });
     }
 });
+
+// Outras rotas...
 
 // Inicia o servidor
 app.listen(PORT, () => {
