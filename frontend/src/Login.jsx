@@ -15,7 +15,7 @@ const Login = () => {
             const response = await axios.post(
                 'https://projeto-de-web-2024.onrender.com/api/authenticate',
                 { email, senha },
-                { withCredentials: true }  // Permite o envio de cookies para o servidor
+                { withCredentials: true } // Permite o envio de cookies para o servidor
             );
 
             if (response.status === 200) {
@@ -27,7 +27,7 @@ const Login = () => {
     };
 
     if (redirectToSite) {
-        return <Navigate to="/site"/>;
+        return <Navigate to="/site" />;
     }
 
     return (
