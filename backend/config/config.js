@@ -1,12 +1,11 @@
 const mysql = require("mysql");
 
 const pool = mysql.createPool({
-    host: "d3mz4.h.filess.io",
-    user: "palmeiras_rawgroupat",
-    password: "bfd6e264fe8b1918d8dea25a51eb00b54e08c8d9",
-    database: "palmeiras_rawgroupat",
-    port: 3307,
-    connectionLimit: 20
+    host: "klkyk.h.filess.io",
+    user: "palmeiras_greatlypan",
+    password: "1851cd484b475016e688034ec4aed2b7a4a4662a",
+    database: "palmeiras_greatlypan",
+    port: 3307
 });
 
 pool.getConnection((erro, connection) => {
