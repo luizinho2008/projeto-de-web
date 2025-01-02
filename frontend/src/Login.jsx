@@ -14,11 +14,10 @@ const Login = () => {
         try {
             const response = await axios.post(
                 'https://projeto-de-web-2024.onrender.com/api/authenticate',
-                { email, senha },
-                { withCredentials: true }  // Permite o envio de cookies para o servidor
-            );
+                { email, senha });
 
             if (response.status === 200) {
+                sessionStorage.setItem("token", response.data.token);
                 setRedirectToSite(true);
             }
         } catch (error) {

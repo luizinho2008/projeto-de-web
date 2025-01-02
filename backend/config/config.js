@@ -5,7 +5,8 @@ const pool = mysql.createPool({
     user: "palmeiras_rawgroupat",
     password: "bfd6e264fe8b1918d8dea25a51eb00b54e08c8d9",
     database: "palmeiras_rawgroupat",
-    port: 3307
+    port: 3307,
+    connectionLimit: 20
 });
 
 pool.getConnection((erro, connection) => {

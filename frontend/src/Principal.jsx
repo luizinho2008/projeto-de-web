@@ -3,32 +3,28 @@ import './Principal.css'
 import Palmeiras from './imgs/palmeiras.png'
 import Camisa from './imgs/camisa.jpg'
 import axios from 'axios';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Principal = () => {
-
   const [user, setUser] = useState("");
   const [torcedores, setTorcedores] = useState([]);
   const navigate = useNavigate();
 
+  const carregaInfo = () => {
+    const token = sessionStorage.getItem("token");
+    if (token) {
+        const payload = token.split('.')[1];
+        const decodedPayload = JSON.parse(atob(payload));
+        console.log("Decoded Payload:", decodedPayload);
+        setUser(decodedPayload.nome);
+    } else {
+        navigate("/login");
+    }
+  }
+
   useEffect(() => {
-    console.log("Verificando sessão...");
-    axios.get('https://projeto-de-web-2024.onrender.com/api/session', { withCredentials: true })
-      .then((resposta) => {
-        console.log("Resposta da sessão:", resposta.data);
-        if (!resposta.data?.user?.nome) {
-          console.log("Usuário não autenticado, redirecionando para login...");
-          navigate('/login');  // Redirecionando para login
-        } else {
-          setUser(resposta.data.user.nome);  // Definindo o nome do usuário
-        }
-      })
-      .catch((erro) => {
-        console.error("Erro ao buscar a sessão:", erro);
-        console.log("Redirecionando para login devido ao erro...");
-        navigate('/login');
-      });
-  }, [navigate]);
+    carregaInfo();
+  }, []);
 
   useEffect(() => {
     console.log("Verificando sessão...");
